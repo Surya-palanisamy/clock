@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hackers Arena - Timer Challenge</title>
+  <title> Timer Challenge</title>
   <style>
     :root{
       --bg1:#0f172a;
@@ -140,7 +140,7 @@
         let seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         // keep the same logic; use a proper template string so the timer renders correctly
-        document.getElementById("timer").textContent = ${days}d ${hours}h ${minutes}m ${seconds}s remaining...;
+        document.getElementById("timer").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s remaining...`;
       }
     }
     setInterval(updateTimer, 1000);
