@@ -14,23 +14,17 @@
   <p id="detected">⚠️ DevTools detected — page behavior may be restricted.</p>
 
   <script>
+    // 30 days + 3 hours from now
     let endTime = Date.now() + (30 * 24 * 60 * 60 * 1000) + (3 * 60 * 60 * 1000);
-    const encoded = [67, 84, 70, 123, 84, 105, 109, 101, 95, 72, 97, 99, 107, 105, 110, 103, 125];
-    if (!localStorage.getItem("hiddenFlag")) {
-      localStorage.setItem("hiddenFlag", btoa(encoded.join(",")));
-    }
 
-    function decodeFlag() {
-      let stored = localStorage.getItem("hiddenFlag");
-      if (!stored) return null;
-      let arr = atob(stored).split(",").map(Number);
-      return arr.map(c => String.fromCharCode(c)).join("");
-    }
+    // exact flag requested (only stored in cookie)
+    const FLAG = "rontOrOVERPh";
 
     function setCookie(name, value, days) {
       let d = new Date();
       d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
       let expires = "expires=" + d.toUTCString();
+      // encodeURIComponent is safe; FLAG contains only safe characters so it will remain identical
       document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
     }
 
@@ -40,11 +34,8 @@
 
       if (diff <= 0) {
         document.getElementById("timer").textContent = "✅ Timer Finished!";
-
-        let flag = decodeFlag();
-        if (flag) {
-          setCookie("CTF_Flag", flag, 1); 
-        }
+        // set cookie only (no localStorage)
+        setCookie("CTF_Flag", FLAG, 1); // cookie will contain: rontOrOVERPh
       } else {
         let days = Math.floor(diff / (1000 * 60 * 60 * 24));
         let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -57,7 +48,6 @@
     }
     setInterval(updateTimer, 1000);
     updateTimer();
-
 
     window.addEventListener("keydown", function (e) {
       // F12
@@ -92,7 +82,7 @@
     }, true);
 
     let devtoolsOpen = false;
-    const threshold = 160; 
+    const threshold = 160;
 
     function detectDevTools() {
       const widthDiff = window.outerWidth - window.innerWidth;
@@ -127,7 +117,7 @@
 
     (function () {
       const start = Date.now();
-      debugger; 
+      debugger;
       const took = Date.now() - start;
       if (took > 100) {
         onDevToolsDetected();
